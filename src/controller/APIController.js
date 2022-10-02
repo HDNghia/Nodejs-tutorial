@@ -11,31 +11,33 @@ let getAllUsers = async (req, res) => {
 }
 
 let createNewUser = async (req, res) => {
-    let { firstNameNew, lastName, email, Address } = req.body;
-
-    if (!firstNameNew || !lastName || !email || !Address) {
+    let { firstName, lastName, email, address } = req.body;
+    if (!firstName || !lastName || !email || !address) {
         return res.status(200).json({
-            message: 'missing requied params'
+            message: 'missing requied params',
         })
     }
-
     await pool.execute('insert into users (firstName, lastName, email, address) values (?, ?, ?, ?)',
-        [firstNameNew, lastName, email, Address]);
+        [firstName, lastName, email, address]);
+    const [rows, fields] = await pool.execute('SELECT * FROM users');
     return res.status(200).json({
-        message: 'ok'
+        message: 'ok',
+        data: rows
     })
 }
 let updateUser = async (req, res) => {
-    let { firstNameNew, lastName, email, id, Address } = req.body;
-    if (!firstNameNew || !lastName || !email || !Address || !id) {
+    let { firstName, lastName, email, id, address } = req.body;
+    if (!firstName || !lastName || !email || !address || !id) {
         return res.status(200).json({
             message: 'missing requied params'
         })
     }
     await pool.execute('update users set firstName = ?, lastName = ?, email = ?, address = ? where id = ?',
-        [firstNameNew, lastName, email, Address, id]);
+        [firstName, lastName, email, address, id]);
+    const [rows, fields] = await pool.execute('SELECT * FROM users');
     return res.status(200).json({
-        message: 'ok'
+        message: 'ok',
+        data: rows
     })
 }
 let deleteUser = async (req, res) => {
@@ -46,8 +48,10 @@ let deleteUser = async (req, res) => {
         })
     }
     await pool.execute('DELETE FROM users WHERE id = ?', [deleteId])
+    const [rows, fields] = await pool.execute('SELECT * FROM users');
     return res.status(200).json({
-        message: 'ok'
+        message: 'oke',
+        data: rows
     })
 
 }
