@@ -2,11 +2,11 @@ import express from 'express';
 import configViewEngine from './configs/viewEngine';
 import initWebRoute from './route/web';
 import initApiroute from './route/api';
+import cors from 'cors';
 // import connection from './configs/connectDB';
 
 require('dotenv').config();
 var morgan = require('morgan')
-
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 })
 
 app.use(morgan('combined'))
-
+app.use(cors())
 //dùng để lấy dữ liệu từ form 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
