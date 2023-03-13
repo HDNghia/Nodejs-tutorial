@@ -3,17 +3,26 @@ let getAllUsers = async (req, res) => {
     //http 
     // 401 501
     // json/xml => object
-    const [rows, fields] = await pool.execute('SELECT * FROM users');
-    return res.status(200).json({
-        message: 'ok',
-        data: rows
-    })
+    console.log("vo roi");
+    let id = req.query.id;
+    if (id == null) {
+        const [rows, fields] = await pool.execute('SELECT * FROM users');
+        return res.status(200).json({
+            message: 'ok',
+            data: rows
+        })
+    } else {
+        const [rows, fields] = await pool.execute('SELECT * FROM users where id = ?', [id]);
+        let [row] = rows
+        return res.status(200).json(row)
+    }
+
 }
 
 let createNewUser = async (req, res) => {
     let { firstName, lastName, email, address } = req.body;
     if (!firstName || !lastName || !email || !address) {
-        return res.status(200).json({
+        return res.status(405).json({
             message: 'missing requied params',
         })
     }

@@ -5,6 +5,8 @@ import path from 'path'
 var appRoot = require('app-root-path');
 let router = express.Router();
 
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, appRoot + '/src/public/image/');
@@ -12,7 +14,6 @@ const storage = multer.diskStorage({
 
     // By default, multer removes file extensions so let's add them back
     filename: function (req, file, cb) {
-
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
